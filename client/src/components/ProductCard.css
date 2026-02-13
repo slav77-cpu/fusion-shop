@@ -1,0 +1,145 @@
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  height: 100%;
+}
+
+.product-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.08);
+}
+
+/* Image (top) */
+.product-image-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1; /* eMAG-style tiles */
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  background: #fafafa;
+
+  /* IMPORTANT: center image without cropping */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  overflow: hidden;
+}
+
+/* Make sure the image NEVER gets cut */
+.product-image {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.product-main {
+  min-width: 0;
+}
+
+.product-title {
+  font-weight: 900;
+  font-size: 14px;
+  color: #111;
+  line-height: 1.25;
+
+  /* 2-line clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-meta {
+  margin-top: 6px;
+  font-size: 12.5px;
+  opacity: 0.85;
+}
+
+.product-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-weight: 800;
+}
+
+.badge.in {
+  background: #f2fff1;
+}
+
+.badge.out {
+  background: #fff1f1;
+}
+
+.badge.tag {
+  background: #fff7e6;
+}
+
+/* Footer: price + button */
+.product-footer {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.product-price {
+  font-weight: 950;
+  font-size: 16px;
+  color: #111;
+}
+
+.add-btn {
+  width: 100%;
+  height: 40px;
+  border-radius: 12px;
+  border: none;
+  background: var(--brand, #1f7a3a);
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.add-btn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.add-btn:disabled {
+  background: #bbb;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.add-btn__icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Very small screens: give a bit more height for tall bottles */
+@media (max-width: 520px) {
+  .product-image-wrap {
+    aspect-ratio: 4 / 5;
+  }
+}

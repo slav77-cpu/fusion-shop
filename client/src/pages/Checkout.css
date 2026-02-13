@@ -1,0 +1,70 @@
+.checkoutPage {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 18px;
+}
+
+.checkoutTitle {
+  margin-top: 18px;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.checkoutSuccessText {
+  margin-top: 8px;
+  opacity: 0.85;
+}
+
+.checkoutSummary {
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  background: white;
+}
+
+.checkoutSummaryRow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.checkoutError {
+  margin-top: 12px;
+  color: crimson;
+}
+
+.checkoutForm {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  background: white;
+  display: grid;
+  gap: 10px;
+}
+
+.checkoutForm textarea {
+  resize: vertical;
+}
+
+.checkoutPrimaryBtn {
+  margin-top: 6px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent, #111);
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.checkoutPrimaryBtn:hover {
+  opacity: 0.9;
+}
+
+.checkoutPrimaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
