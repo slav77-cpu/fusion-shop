@@ -44,7 +44,15 @@ export default function Navbar({ cartCount = 0, isAdmin = false, onAdminLogout }
           <NavLink to="/" className="nav__brand" onClick={() => setOpen(false)}>
             Fusion
           </NavLink>
-
+          <NavLink
+            to="/admin/login"
+            className="nav__mark"
+            aria-label="Админ вход"
+            title="Админ вход"
+            onClick={() => setOpen(false)}
+          >
+            F
+          </NavLink>
           <button
             className="nav__burger"
             type="button"
