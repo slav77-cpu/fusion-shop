@@ -15,6 +15,7 @@ export default function Home({ onAdd }) {
     u.searchParams.set("limit", "3");
     u.searchParams.set("page", "1");
     u.searchParams.set("sort", "newest");
+    u.searchParams.set("tag", "hot"); // показва само Hot продукти
     return u.toString();
   }, []);
 
@@ -46,7 +47,7 @@ export default function Home({ onAdd }) {
     <div className="home">
       {/* Hero */}
       <section className="hero">
-        <h1 className="heroTitle">Warehouse Shop</h1>
+        <h1 className="heroTitle">Fusion Shop</h1>
         <p className="heroText">
           Консумативи и продукти за ежедневието — бърза поръчка с наложен платеж.
         </p>
@@ -69,7 +70,7 @@ export default function Home({ onAdd }) {
       {/* Hot products */}
       <section className="hot">
         <div className="hotHeader">
-          <h2 className="hotTitle">Hot products</h2>
+          <h2 className="hotTitle">Топ продукти</h2>
           <Link to="/products" className="hotLink">
             Виж всички →
           </Link>

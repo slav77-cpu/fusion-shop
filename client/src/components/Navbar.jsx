@@ -41,18 +41,23 @@ export default function Navbar({ cartCount = 0, isAdmin = false, onAdminLogout }
     <header className="nav">
       <div className="nav__inner">
         <div className="nav__left">
-          <NavLink to="/" className="nav__brand" onClick={() => setOpen(false)}>
-            Fusion
-          </NavLink>
+          {/* Secret admin mark – far left */}
           <NavLink
             to="/admin/login"
             className="nav__mark"
             aria-label="Админ вход"
             title="Админ вход"
             onClick={() => setOpen(false)}
+            style={{ cursor: "default" }}
           >
             F
           </NavLink>
+
+          {/* Brand */}
+          <NavLink to="/" className="nav__brand" onClick={() => setOpen(false)}>
+            Fusion
+          </NavLink>
+
           <button
             className="nav__burger"
             type="button"

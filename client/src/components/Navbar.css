@@ -24,6 +24,30 @@
   min-width: 0;
 }
 
+/* Secret admin mark (F) — looks like a logo, no hover/pointer */
+.nav__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.78);
+  background: transparent;
+  user-select: none;
+  cursor: default; /* avoid the hand cursor */
+}
+
+.nav__mark:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+}
+
 /* Brand */
 .nav__brand {
   font-weight: 950;
