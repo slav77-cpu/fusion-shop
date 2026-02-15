@@ -50,21 +50,51 @@
 
 .checkoutPrimaryBtn {
   margin-top: 6px;
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 12px 16px;
+  border-radius: 14px;
   border: none;
-  background: var(--accent, #111);
+  background: linear-gradient(135deg, #22c55e, #16a34a);
   color: white;
   font-weight: 900;
   cursor: pointer;
-  transition: opacity 0.15s ease;
+  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
+  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
 }
 
 .checkoutPrimaryBtn:hover {
-  opacity: 0.9;
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.45);
 }
 
 .checkoutPrimaryBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Success animation after order */
+.checkoutSuccessBox {
+  margin-top: 14px;
+  padding: 18px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  color: #065f46;
+  font-weight: 900;
+  text-align: center;
+  animation: successPop 0.6s ease-out;
+  box-shadow: 0 10px 26px rgba(22, 163, 74, 0.25);
+}
+
+@keyframes successPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.05) translateY(0);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
