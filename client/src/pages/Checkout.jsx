@@ -74,12 +74,21 @@ export default function Checkout({ cart, onClear }) {
   }
 
   if (successId) {
-    return (
-      <div className="checkoutPage">
-        <h1 className="checkoutTitle">Поръчката е приета ✅</h1>
-        <p className="checkoutSuccessText">
+  return (
+    <div className="checkoutPage">
+      <div className="checkoutSuccessWrap">
+        <div className="checkoutSuccessBadge">
+          <div className="checkoutSuccessCheck">✓</div>
+        </div>
+
+        <h2 className="checkoutSuccessTitle">
+          Поръчката е приета!
+        </h2>
+
+        <p className="checkoutSuccessSub">
           Номер на поръчка: <b>{successId}</b>
         </p>
+
         <button
           onClick={() => navigate("/products")}
           className="checkoutPrimaryBtn"
@@ -87,8 +96,9 @@ export default function Checkout({ cart, onClear }) {
           Назад към продуктите →
         </button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="checkoutPage">

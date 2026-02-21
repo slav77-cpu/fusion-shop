@@ -73,16 +73,73 @@
 }
 
 /* Success animation after order */
-.checkoutSuccessBox {
-  margin-top: 14px;
-  padding: 18px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-  color: #065f46;
-  font-weight: 900;
+/* ---------- SUCCESS ANIMATION ---------- */
+
+.checkoutSuccessWrap {
+  margin-top: 40px;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
   text-align: center;
-  animation: successPop 0.6s ease-out;
-  box-shadow: 0 10px 26px rgba(22, 163, 74, 0.25);
+  animation: fadeIn 0.4s ease;
+}
+
+.checkoutSuccessBadge {
+  width: 82px;
+  height: 82px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 14px 34px rgba(22, 163, 74, 0.35);
+  animation: popIn 0.35s ease-out;
+}
+
+.checkoutSuccessCheck {
+  color: #fff;
+  font-size: 40px;
+  font-weight: 900;
+  animation: checkDrop 0.45s ease-out 0.1s both;
+}
+
+.checkoutSuccessTitle {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.checkoutSuccessSub {
+  margin: 0;
+  opacity: 0.85;
+}
+
+/* Animations */
+
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes checkDrop {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes successPop {
