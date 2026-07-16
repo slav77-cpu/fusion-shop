@@ -71,7 +71,7 @@ async function reserveItemsAndBuildOrderData(
     total += price * qty;
 
     itemsData.push({
-      productId: product.id,
+      product: { connect: { id: product.id } },
       title: product.title + (product.variantName ? ` — ${product.variantName}` : ""),
       variantName: product.variantName || "",
       price: new Prisma.Decimal(price),
@@ -170,7 +170,7 @@ router.post("/card-intent", async (req: Request, res: Response, next: NextFuncti
       const price = Number(product.price);
       total += price * qty;
       itemsData.push({
-        productId: product.id,
+        product: { connect: { id: product.id } },
         title: product.title + (product.variantName ? ` — ${product.variantName}` : ""),
         variantName: product.variantName || "",
         price: new Prisma.Decimal(price),
@@ -280,8 +280,9 @@ router.get("/", requireAdmin, async (req: Request, res: Response, next: NextFunc
 // GET /orders/:id
 router.get("/:id", requireAdmin, async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const orderId = String(req.params.id);
     const order = await prisma.order.findUnique({
-      where: { id: req.params.id },
+      where: { id: orderId },
       include: { items: true },
     });
     if (!order) return res.status(404).json({ message: "Order not found" });
@@ -302,7 +303,7 @@ router.patch("/:id/status", requireAdmin, async (req: Request, res: Response, ne
     }
 
     const order = await prisma.order.update({
-      where: { id: req.params.id },
+      where: { id: String(req.params.id) },
       data: { status: status as OrderStatus },
     });
 

@@ -143,7 +143,7 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response, next: NextF
       groupId: p.groupId !== undefined ? String(p.groupId).trim() : undefined,
     };
 
-    const updated = await prisma.product.update({ where: { id: req.params.id }, data });
+    const updated = await prisma.product.update({ where: { id: String(req.params.id) }, data });
     res.json(serializeProduct(updated));
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2025") {
@@ -156,7 +156,7 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response, next: NextF
 // ADMIN: delete product
 router.delete("/:id", requireAdmin, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await prisma.product.delete({ where: { id: req.params.id } });
+    await prisma.product.delete({ where: { id: String(req.params.id) } });
     res.json({ ok: true });
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2025") {
@@ -169,7 +169,7 @@ router.delete("/:id", requireAdmin, async (req: Request, res: Response, next: Ne
 // ADMIN: get single product (за edit form)
 router.get("/:id", requireAdmin, async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const p = await prisma.product.findUnique({ where: { id: req.params.id } });
+    const p = await prisma.product.findUnique({ where: { id: String(req.params.id) } });
     if (!p) return res.status(404).json({ message: "Product not found" });
     res.json(serializeProduct(p));
   } catch (err) {
