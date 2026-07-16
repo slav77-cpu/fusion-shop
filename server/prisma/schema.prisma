@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  new
+  confirmed
+  shipped
+  done
+  cancelled
+}
+
+enum PaymentMethod {
+  cod
+  card
+}
+
+enum PaymentStatus {
+  pending
+  paid
+  failed
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  title        String
+  variantName  String?
+  brand        String?
+  category     String?
+  packLabel    String?
+  pcs          Int?
+  sizeMl       Int?
+  price        Decimal  @db.Decimal(10, 2)
+  imageUrl     String?
+  // Real inventory count. inStock (shown to shoppers) is derived as stockQty > 0
+  // — there's deliberately no separate boolean to keep out of sync with reality.
+  stockQty     Int      @default(0)
+  tag          String?
+  groupId      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orderItems   OrderItem[]
+  stockAudits  StockAudit[]
+
+  @@index([category])
+  @@index([brand])
+  @@index([groupId])
+}
+
+model Order {
+  id            String        @id @default(uuid())
+  customerName  String
+  customerPhone String
+  customerAddress String
+  customerNote  String?
+  total         Decimal       @db.Decimal(10, 2)
+  status        OrderStatus   @default(new)
+
+  paymentMethod PaymentMethod @default(cod)
+  paymentStatus PaymentStatus @default(pending)
+  stripePaymentIntentId String? @unique
+
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  items         OrderItem[]
+
+  @@index([status])
+  @@index([customerPhone])
+  @@index([customerName])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId     String
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId   String?
+  title       String
+  variantName String?
+  price       Decimal  @db.Decimal(10, 2)
+  qty         Int
+
+  @@index([orderId])
+}
+
+// One row per "revision" / stock count an admin performs on a product:
+// what the system said the quantity was vs. what was actually counted.
+// Saving one of these also reconciles Product.stockQty to the counted value.
+model StockAudit {
+  id         String   @id @default(uuid())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  String
+  systemQty  Int
+  countedQty Int
+  difference Int
+  note       String?
+  createdAt  DateTime @default(now())
+
+  @@index([productId])
+  @@index([createdAt])
+}

@@ -1,0 +1,196 @@
+/* AdminOrders.css */
+
+.aoPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* Toast */
+.aoToast {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 9999;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-weight: 950;
+  box-shadow: 0 10px 18px rgba(22, 163, 74, 0.28);
+}
+
+/* Header */
+.aoHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.aoBack {
+  opacity: 0.75;
+  font-weight: 800;
+}
+
+/* Controls row */
+.aoControls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.aoControl {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: white;
+}
+
+/* Chips */
+.aoChips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.aoChip {
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.aoChipGhost {
+  opacity: 0.85;
+}
+
+.aoTotal {
+  margin-left: auto;
+  opacity: 0.8;
+}
+
+/* Messages */
+.aoMsg {
+  margin-top: 12px;
+}
+
+.aoMsgError {
+  color: crimson;
+}
+
+/* Table */
+.aoTableWrap {
+  overflow-x: auto;
+}
+
+.aoTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid #eee;
+}
+
+.aoTh {
+  text-align: left;
+  padding: 12px;
+  font-size: 13px;
+  opacity: 0.8;
+  border-bottom: 1px solid #eee;
+}
+
+.aoTd {
+  padding: 12px;
+  vertical-align: top;
+}
+
+.aoTr {
+  border-top: 1px solid #eee;
+}
+
+.aoAddr {
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status + done */
+.aoStatusWrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aoDoneBtn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.aoDoneBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Open link */
+.aoOpenLink {
+  font-weight: 950;
+  border: none;
+  border-radius: 12px;
+  padding: 9px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  box-shadow: 0 10px 18px rgba(22, 163, 74, 0.28);
+  white-space: nowrap;
+}
+
+/* Pagination */
+.aoPager {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.aoPagerBtn {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.aoPagerText {
+  opacity: 0.8;
+}
+
+/* Status pill */
+.statusPill {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-weight: 900;
+  display: inline-block;
+  background: #f7f7f7;
+}
+
+.status--new { background: #eef5ff; }
+.status--confirmed { background: #fff7e6; }
+.status--shipped { background: #f2fff1; }
+.status--done { background: #f3f4f6; }
+.status--cancelled { background: #fff1f1; }
