@@ -1,0 +1,224 @@
+.pdPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 20px 56px;
+}
+
+.pdBack {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--muted, #6b6a63);
+  margin-bottom: 8px;
+}
+
+.pdBack:hover {
+  color: var(--accent, #1c8a5c);
+}
+
+.msg {
+  color: var(--muted, #6b6a63);
+}
+
+.msgError {
+  color: crimson;
+}
+
+.pdGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 12px;
+}
+
+@media (min-width: 900px) {
+  .pdGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+}
+
+.pdImageWrap {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  border: 1px solid var(--line, #e7e4db);
+  overflow: hidden;
+}
+
+.pdInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pdEyebrow {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent, #1c8a5c);
+}
+
+.pdTitle {
+  margin: 0;
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.pdSize {
+  color: var(--muted, #6b6a63);
+  font-size: 14px;
+}
+
+.pdPrice {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 24px;
+  margin-top: 4px;
+}
+
+.pdDescription {
+  color: #40403a;
+  line-height: 1.6;
+  margin: 8px 0 0;
+  max-width: 56ch;
+}
+
+.pdSpecs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+}
+
+.pdSpecRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.pdSpecRow span:first-child {
+  color: var(--muted, #6b6a63);
+}
+
+.pdSpecRow span:last-child {
+  font-weight: 600;
+}
+
+.pdActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.pdQty {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f4f2ec;
+  border-radius: 10px;
+  padding: 6px;
+}
+
+.pdQty__btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: #fff;
+  font-weight: 700;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.pdQty__val {
+  min-width: 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.pdAddBtn {
+  flex: 1;
+  padding: 14px;
+  background: var(--accent, #1c8a5c);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pdAddBtn:hover {
+  opacity: 0.92;
+}
+
+.pdAddBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.pdInCart {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted, #6b6a63);
+  font-weight: 600;
+}
+
+.pdInCart__btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 6px;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pdBulkBanner {
+  display: block;
+  background: var(--accentSoft, rgba(28, 138, 92, 0.12));
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #30302a;
+  margin-top: 8px;
+}
+
+.pdBulkBanner span {
+  color: var(--accent, #1c8a5c);
+  font-weight: 700;
+}
+
+.pdRelated {
+  margin-top: 48px;
+}
+
+.pdRelated h2 {
+  font-size: 20px;
+  margin: 0 0 16px;
+}
+
+.pdRelatedGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (min-width: 720px) {
+  .pdRelatedGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

@@ -11,10 +11,18 @@ interface ProductFormState {
   category: string;
   packLabel: string;
   price: string;
+  description: string;
   imageUrl: string;
   stockQty: string;
   tag: string;
   groupId: string;
+}
+
+interface TierRow {
+  label: string;
+  unitQty: string;
+  price: string;
+  moqTiers: string;
 }
 
 const emptyForm: ProductFormState = {
@@ -24,11 +32,14 @@ const emptyForm: ProductFormState = {
   category: "",
   packLabel: "",
   price: "",
+  description: "",
   imageUrl: "",
   stockQty: "0",
   tag: "",
   groupId: "",
 };
+
+const emptyTierRow: TierRow = { label: "", unitQty: "", price: "", moqTiers: "1" };
 
 export default function AdminProductForm() {
   const navigate = useNavigate();
@@ -40,6 +51,7 @@ export default function AdminProductForm() {
   const [err, setErr] = useState("");
 
   const [form, setForm] = useState<ProductFormState>(emptyForm);
+  const [tiers, setTiers] = useState<TierRow[]>([]);
 
   const loadUrl = useMemo(() => (isEdit ? `/products/${id}` : ""), [isEdit, id]);
 
@@ -66,11 +78,20 @@ export default function AdminProductForm() {
             category: data.category || "",
             packLabel: data.packLabel || "",
             price: data.price !== undefined && data.price !== null ? String(data.price) : "",
+            description: data.description || "",
             imageUrl: data.imageUrl || "",
             stockQty: data.stockQty !== undefined && data.stockQty !== null ? String(data.stockQty) : "0",
             tag: data.tag || "",
             groupId: data.groupId || "",
           });
+          setTiers(
+            (data.priceTiers || []).map((t) => ({
+              label: t.label,
+              unitQty: String(t.unitQty),
+              price: String(t.price),
+              moqTiers: String(t.moqTiers ?? 1),
+            }))
+          );
         }
       } catch (e) {
         if (!cancelled) setErr(e instanceof Error ? e.message : "Неуспешно зареждане на продукта");
@@ -84,8 +105,10 @@ export default function AdminProductForm() {
     };
   }, [isEdit, loadUrl]);
 
-  function onChange(e: ChangeEvent<HTMLInputElement>) {
-    const { name, value, type, checked } = e.target;
+  function onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const { name, value } = e.target;
+    const checked = e.target instanceof HTMLInputElement ? e.target.checked : false;
+    const type = e.target instanceof HTMLInputElement ? e.target.type : "text";
     setForm((p) => ({ ...p, [name]: type === "checkbox" ? checked : value }));
   }
 
@@ -114,6 +137,18 @@ export default function AdminProductForm() {
     }
   }
 
+  function addTierRow() {
+    setTiers((p) => [...p, { ...emptyTierRow }]);
+  }
+
+  function updateTierRow(i: number, patch: Partial<TierRow>) {
+    setTiers((p) => p.map((row, idx) => (idx === i ? { ...row, ...patch } : row)));
+  }
+
+  function removeTierRow(i: number) {
+    setTiers((p) => p.filter((_, idx) => idx !== i));
+  }
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setErr("");
@@ -140,10 +175,20 @@ export default function AdminProductForm() {
         throw new Error("Моля въведи валидно количество (цяло число, 0 или повече).");
       }
 
+      const priceTiers = tiers
+        .filter((t) => t.label.trim() && t.unitQty && t.price)
+        .map((t) => ({
+          label: t.label.trim(),
+          unitQty: Number(t.unitQty),
+          price: Number(t.price),
+          moqTiers: Number(t.moqTiers) || 1,
+        }));
+
       const payload = {
         ...form,
         price: priceNum,
         stockQty: qtyNum,
+        priceTiers,
       };
 
       await apiSend(isEdit ? `/products/${id}` : "/products", isEdit ? "PUT" : "POST", payload, {
@@ -222,6 +267,15 @@ export default function AdminProductForm() {
             />
           </div>
 
+          <textarea
+            name="description"
+            value={form.description}
+            onChange={onChange}
+            placeholder="Описание на продукта (показва се на страницата на продукта)"
+            rows={4}
+            style={{ ...input, height: "auto", padding: "10px 12px", resize: "vertical" }}
+          />
+
           <input
             name="imageUrl"
             value={form.imageUrl}
@@ -277,6 +331,106 @@ export default function AdminProductForm() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
             <input name="tag" value={form.tag} onChange={onChange} placeholder='Таг (по избор, напр. "Хит")' style={input} />
             <input name="groupId" value={form.groupId} onChange={onChange} placeholder="Група (по избор)" style={input} />
+          </div>
+
+          <div
+            style={{
+              border: "1px solid #eee",
+              borderRadius: 14,
+              background: "#fafafa",
+              padding: 12,
+              display: "grid",
+              gap: 10,
+            }}
+          >
+            <div style={{ fontWeight: 900, opacity: 0.8 }}>
+              Ценови нива на едро (по избор — кутия, палет и т.н.)
+            </div>
+
+            {tiers.map((t, i) => {
+              const unitQtyNum = Number(t.unitQty);
+              const priceNum = Number(t.price);
+              const perUnit =
+                unitQtyNum > 0 && Number.isFinite(priceNum) ? priceNum / unitQtyNum : null;
+
+              return (
+                <div
+                  key={i}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1.4fr 0.8fr 0.8fr 0.8fr auto",
+                    gap: 8,
+                    alignItems: "center",
+                  }}
+                >
+                  <input
+                    value={t.label}
+                    onChange={(e) => updateTierRow(i, { label: e.target.value })}
+                    placeholder='Име (напр. "Кутия от 10 пакета")'
+                    style={input}
+                  />
+                  <input
+                    value={t.unitQty}
+                    onChange={(e) => updateTierRow(i, { unitQty: e.target.value })}
+                    inputMode="numeric"
+                    placeholder="Бр. пакети"
+                    style={input}
+                  />
+                  <div>
+                    <input
+                      value={t.price}
+                      onChange={(e) => updateTierRow(i, { price: e.target.value })}
+                      inputMode="decimal"
+                      placeholder="Цена (€)"
+                      style={input}
+                    />
+                    {perUnit !== null && (
+                      <div style={{ fontSize: 11, opacity: 0.65, marginTop: 2 }}>
+                        ≈ {perUnit.toFixed(2)} € / бр.
+                      </div>
+                    )}
+                  </div>
+                  <input
+                    value={t.moqTiers}
+                    onChange={(e) => updateTierRow(i, { moqTiers: e.target.value })}
+                    inputMode="numeric"
+                    placeholder="MOQ"
+                    style={input}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeTierRow(i)}
+                    style={{
+                      height: 40,
+                      padding: "0 10px",
+                      borderRadius: 12,
+                      border: "1px solid #eee",
+                      background: "white",
+                      color: "#b3261e",
+                      fontWeight: 800,
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              onClick={addTierRow}
+              style={{
+                justifySelf: "start",
+                height: 38,
+                padding: "0 14px",
+                borderRadius: 12,
+                border: "1px solid #ddd",
+                background: "white",
+                fontWeight: 800,
+              }}
+            >
+              + Добави ниво
+            </button>
           </div>
 
           <button

@@ -4,6 +4,9 @@ import { useMemo, useState, useEffect, useRef } from "react";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
+import Wholesale from "./pages/Wholesale";
+import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 
@@ -56,7 +59,7 @@ export default function App() {
     [cart]
   );
 
-  function addToCart(p: Product) {
+  function addToCart(p: Product, qty: number = 1) {
     if (!addSoundRef.current) {
       addSoundRef.current = new Audio("/sounds/pop.mp3");
       addSoundRef.current.volume = 0.35;
@@ -74,7 +77,7 @@ export default function App() {
       const existing = prev.find((x) => x.id === p.id);
       if (existing) {
         return prev.map((x) =>
-          x.id === p.id ? { ...x, qty: x.qty + 1 } : x
+          x.id === p.id ? { ...x, qty: x.qty + qty } : x
         );
       }
       return [
@@ -86,7 +89,7 @@ export default function App() {
           price: Number(p.price),
           packLabel: p.packLabel || (p.sizeMl ? `${p.sizeMl} ml` : ""),
           imageUrl: p.imageUrl || "",
-          qty: 1,
+          qty,
         },
       ];
     });
@@ -132,6 +135,12 @@ export default function App() {
           path="/products"
           element={<Products cart={cart} onAdd={addToCart} onInc={inc} onDec={dec} />}
         />
+        <Route
+          path="/products/:id"
+          element={<ProductDetail cart={cart} onAdd={addToCart} onInc={inc} onDec={dec} />}
+        />
+        <Route path="/wholesale" element={<Wholesale />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route
           path="/cart"

@@ -1,5 +1,5 @@
 import nodemailer, { type Transporter } from "nodemailer";
-import type { Order, OrderItem } from "@prisma/client";
+import type { ContactMessage, Order, OrderItem, WholesaleQuote } from "@prisma/client";
 
 let cachedTransporter: Transporter | null | undefined;
 
@@ -32,6 +32,28 @@ function getTransporter(): Transporter | null {
 
 function fmtMoney(n: number): string {
   return `${n.toFixed(2)} €`;
+}
+
+/** Shared send step for the notify-admin emails below: resolves the
+ *  transporter/recipient and never throws — a mail hiccup must never break
+ *  the request that triggered it. */
+async function notifyAdmin(subject: string, html: string): Promise<void> {
+  const transporter = getTransporter();
+  if (!transporter) return;
+
+  const to = process.env.ADMIN_NOTIFY_EMAIL || process.env.GMAIL_USER;
+  if (!to) return;
+
+  try {
+    await transporter.sendMail({
+      from: `"Fusion Shop" <${process.env.GMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
+  } catch (err) {
+    console.error(`Failed to send notification email (${subject}):`, err);
+  }
 }
 
 function orderEmailHtml(order: Order & { items: OrderItem[] }): string {
@@ -87,20 +109,48 @@ function orderEmailHtml(order: Order & { items: OrderItem[] }): string {
  * creation — this just logs and moves on.
  */
 export async function sendNewOrderEmail(order: Order & { items: OrderItem[] }): Promise<void> {
-  const transporter = getTransporter();
-  if (!transporter) return;
+  await notifyAdmin(
+    `Нова поръчка #${order.id.slice(0, 8)} — ${fmtMoney(Number(order.total))}`,
+    orderEmailHtml(order)
+  );
+}
 
-  const to = process.env.ADMIN_NOTIFY_EMAIL || process.env.GMAIL_USER;
-  if (!to) return;
+function wholesaleQuoteEmailHtml(q: WholesaleQuote): string {
+  return `
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;">
+      <h2 style="margin:0 0 4px;">Нова заявка за едро</h2>
+      <p style="color:#555;margin:0 0 16px;">${new Date(q.createdAt).toLocaleString("bg-BG")}</p>
+      <table style="width:100%;border-collapse:collapse;">
+        <tr><td style="padding:2px 0;"><b>Фирма:</b></td><td>${q.businessName}</td></tr>
+        <tr><td style="padding:2px 0;"><b>Имейл:</b></td><td>${q.email}</td></tr>
+        <tr><td style="padding:2px 0;"><b>Тип бизнес:</b></td><td>${q.businessType}</td></tr>
+        ${q.estVolume ? `<tr><td style="padding:2px 0;"><b>Очакван обем:</b></td><td>${q.estVolume}</td></tr>` : ""}
+      </table>
+    </div>
+  `;
+}
 
-  try {
-    await transporter.sendMail({
-      from: `"Fusion Shop" <${process.env.GMAIL_USER}>`,
-      to,
-      subject: `Нова поръчка #${order.id.slice(0, 8)} — ${fmtMoney(Number(order.total))}`,
-      html: orderEmailHtml(order),
-    });
-  } catch (err) {
-    console.error("Failed to send new-order notification email:", err);
-  }
+/** Fire-and-forget-ish, same contract as sendNewOrderEmail. */
+export async function sendWholesaleQuoteEmail(quote: WholesaleQuote): Promise<void> {
+  await notifyAdmin(`Нова заявка за едро — ${quote.businessName}`, wholesaleQuoteEmailHtml(quote));
+}
+
+function contactMessageEmailHtml(m: ContactMessage): string {
+  return `
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;">
+      <h2 style="margin:0 0 4px;">Ново съобщение от контакти</h2>
+      <p style="color:#555;margin:0 0 16px;">${new Date(m.createdAt).toLocaleString("bg-BG")}</p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+        <tr><td style="padding:2px 0;"><b>Име:</b></td><td>${m.name}</td></tr>
+        <tr><td style="padding:2px 0;"><b>Имейл:</b></td><td>${m.email}</td></tr>
+        <tr><td style="padding:2px 0;"><b>Категория:</b></td><td>${m.category}</td></tr>
+      </table>
+      <p style="white-space:pre-wrap;">${m.message}</p>
+    </div>
+  `;
+}
+
+/** Fire-and-forget-ish, same contract as sendNewOrderEmail. */
+export async function sendContactMessageEmail(msg: ContactMessage): Promise<void> {
+  await notifyAdmin(`Ново съобщение от контакти — ${msg.name}`, contactMessageEmailHtml(msg));
 }

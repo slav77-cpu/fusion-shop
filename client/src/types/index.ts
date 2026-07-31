@@ -1,3 +1,11 @@
+export interface PriceTier {
+  id?: string;
+  label: string;
+  unitQty: number;
+  price: number;
+  moqTiers?: number;
+}
+
 export interface Product {
   id: string;
   title: string;
@@ -8,6 +16,7 @@ export interface Product {
   pcs?: number;
   sizeMl?: number;
   price: number;
+  description?: string;
   imageUrl?: string;
   stockQty: number;
   // Derived server-side (stockQty > 0) — kept so ProductCard/Cart/etc don't
@@ -15,6 +24,7 @@ export interface Product {
   inStock: boolean;
   tag?: string;
   groupId?: string;
+  priceTiers?: PriceTier[];
   createdAt?: string;
   updatedAt?: string;
 }

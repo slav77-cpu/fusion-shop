@@ -36,6 +36,7 @@ model Product {
   pcs          Int?
   sizeMl       Int?
   price        Decimal  @db.Decimal(10, 2)
+  description  String?  @db.Text
   imageUrl     String?
   // Real inventory count. inStock (shown to shoppers) is derived as stockQty > 0
   // — there's deliberately no separate boolean to keep out of sync with reality.
@@ -47,10 +48,49 @@ model Product {
 
   orderItems   OrderItem[]
   stockAudits  StockAudit[]
+  priceTiers   ProductPriceTier[]
 
   @@index([category])
   @@index([brand])
   @@index([groupId])
+}
+
+// A wholesale bulk-buy level for a product (e.g. "box of 10 packs", "pallet
+// of 1000 packs"). unitQty is expressed in the product's own retail unit
+// (its packLabel/pcs), not raw pieces, so admins reason about it the same
+// way they already reason about the product. Price is admin-entered per
+// tier (bulk pricing is usually negotiated/rounded, not a clean formula)
+// rather than derived from Product.price.
+model ProductPriceTier {
+  id         String   @id @default(uuid())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  String
+  label      String
+  unitQty    Int
+  price      Decimal  @db.Decimal(10, 2)
+  moqTiers   Int      @default(1)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([productId])
+}
+
+model WholesaleQuote {
+  id           String   @id @default(uuid())
+  businessName String
+  email        String
+  businessType String
+  estVolume    String?
+  createdAt    DateTime @default(now())
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  category  String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
 }
 
 model Order {

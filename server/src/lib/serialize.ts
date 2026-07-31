@@ -1,4 +1,4 @@
-import type { Order, OrderItem, Product, StockAudit } from "@prisma/client";
+import type { Order, OrderItem, Product, ProductPriceTier, StockAudit } from "@prisma/client";
 
 /**
  * Prisma returns `Decimal` for numeric(10,2) columns. The old Mongo/Mongoose
@@ -7,7 +7,7 @@ import type { Order, OrderItem, Product, StockAudit } from "@prisma/client";
  * keep the JSON contract identical to the old API.
  */
 
-export function serializeProduct(p: Product) {
+export function serializeProduct(p: Product & { priceTiers?: ProductPriceTier[] }) {
   return {
     id: p.id,
     title: p.title,
@@ -18,12 +18,20 @@ export function serializeProduct(p: Product) {
     pcs: p.pcs ?? undefined,
     sizeMl: p.sizeMl ?? undefined,
     price: Number(p.price),
+    description: p.description ?? "",
     imageUrl: p.imageUrl ?? "",
     stockQty: p.stockQty,
     // Derived, not stored — the shopper-facing "is this orderable" flag.
     inStock: p.stockQty > 0,
     tag: p.tag ?? "",
     groupId: p.groupId ?? "",
+    priceTiers: (p.priceTiers ?? []).map((t) => ({
+      id: t.id,
+      label: t.label,
+      unitQty: t.unitQty,
+      price: Number(t.price),
+      moqTiers: t.moqTiers,
+    })),
     createdAt: p.createdAt,
     updatedAt: p.updatedAt,
   };

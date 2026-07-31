@@ -16,6 +16,13 @@
   border-color: var(--line, #e7e4db);
 }
 
+.product-card__link {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
 /* Image (top) */
 .product-image-wrap {
   width: 100%;

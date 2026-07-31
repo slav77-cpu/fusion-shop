@@ -6,6 +6,41 @@ import { serializeProduct } from "../lib/serialize.js";
 
 const router = express.Router();
 
+interface PriceTierInput {
+  label?: string;
+  unitQty?: number | string;
+  price?: number | string;
+  moqTiers?: number | string;
+}
+
+/** Filters + normalizes the admin-submitted tiers array into Prisma's nested
+ *  create shape. Rows missing a label/positive unitQty/non-negative price are
+ *  dropped rather than rejecting the whole save — keeps the form forgiving of
+ *  a half-filled blank row left over from "+ Добави ниво". */
+function parseTiers(raw: unknown): Prisma.ProductPriceTierCreateWithoutProductInput[] {
+  if (!Array.isArray(raw)) return [];
+  const out: Prisma.ProductPriceTierCreateWithoutProductInput[] = [];
+  raw.forEach((t: PriceTierInput, i: number) => {
+    const label = String(t?.label || "").trim();
+    const unitQty = Number(t?.unitQty);
+    const price = Number(t?.price);
+    const moqTiers = Number(t?.moqTiers);
+    if (!label || !Number.isFinite(unitQty) || unitQty < 1 || !Number.isFinite(price) || price < 0) {
+      return;
+    }
+    out.push({
+      label,
+      unitQty: Math.round(unitQty),
+      price: new Prisma.Decimal(price),
+      moqTiers: Number.isFinite(moqTiers) && moqTiers >= 1 ? Math.round(moqTiers) : 1,
+      sortOrder: i,
+    });
+  });
+  return out;
+}
+
+const priceTiersOrder = { priceTiers: { orderBy: { sortOrder: "asc" as const } } };
+
 // GET /products?q=&category=&brand=&minPrice=&maxPrice=&sort=&page=&limit=
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -46,12 +81,12 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
     if (sort === "title_asc") orderBy = { title: "asc" };
 
     const pageNum = Math.max(1, Number(page) || 1);
-    const limitNum = Math.min(50, Math.max(1, Number(limit) || 10));
+    const limitNum = Math.min(100, Math.max(1, Number(limit) || 10));
     const skip = (pageNum - 1) * limitNum;
 
     const [total, items] = await Promise.all([
       prisma.product.count({ where }),
-      prisma.product.findMany({ where, orderBy, skip, take: limitNum }),
+      prisma.product.findMany({ where, orderBy, skip, take: limitNum, include: priceTiersOrder }),
     ]);
 
     res.json({
@@ -110,11 +145,14 @@ router.post("/", requireAdmin, async (req: Request, res: Response, next: NextFun
         sizeMl: p.sizeMl ? Number(p.sizeMl) : undefined,
         pcs: p.pcs ? Number(p.pcs) : undefined,
         price: new Prisma.Decimal(Number(p.price)),
+        description: String(p.description || "").trim(),
         imageUrl: String(p.imageUrl || "").trim(),
         stockQty: p.stockQty !== undefined && p.stockQty !== "" ? Math.max(0, Number(p.stockQty)) : 0,
         tag: String(p.tag || "").trim(),
         groupId: String(p.groupId || "").trim(),
+        priceTiers: { create: parseTiers(p.priceTiers) },
       },
+      include: priceTiersOrder,
     });
 
     res.status(201).json(serializeProduct(created));
@@ -137,13 +175,23 @@ router.put("/:id", requireAdmin, async (req: Request, res: Response, next: NextF
       sizeMl: p.sizeMl !== undefined && p.sizeMl !== "" ? Number(p.sizeMl) : undefined,
       pcs: p.pcs !== undefined && p.pcs !== "" ? Number(p.pcs) : undefined,
       price: p.price !== undefined ? new Prisma.Decimal(Number(p.price)) : undefined,
+      description: p.description !== undefined ? String(p.description).trim() : undefined,
       imageUrl: p.imageUrl !== undefined ? String(p.imageUrl).trim() : undefined,
       stockQty: p.stockQty !== undefined && p.stockQty !== "" ? Math.max(0, Number(p.stockQty)) : undefined,
       tag: p.tag !== undefined ? String(p.tag).trim() : undefined,
       groupId: p.groupId !== undefined ? String(p.groupId).trim() : undefined,
+      // Whole-form save: replace the tier set atomically as part of this
+      // update whenever the client sent a priceTiers array at all.
+      ...(p.priceTiers !== undefined
+        ? { priceTiers: { deleteMany: {}, create: parseTiers(p.priceTiers) } }
+        : {}),
     };
 
-    const updated = await prisma.product.update({ where: { id: String(req.params.id) }, data });
+    const updated = await prisma.product.update({
+      where: { id: String(req.params.id) },
+      data,
+      include: priceTiersOrder,
+    });
     res.json(serializeProduct(updated));
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2025") {
@@ -166,10 +214,13 @@ router.delete("/:id", requireAdmin, async (req: Request, res: Response, next: Ne
   }
 });
 
-// ADMIN: get single product (за edit form)
-router.get("/:id", requireAdmin, async (req: Request, res: Response, next: NextFunction) => {
+// GET /products/:id — public product detail (also used by the admin edit form)
+router.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const p = await prisma.product.findUnique({ where: { id: String(req.params.id) } });
+    const p = await prisma.product.findUnique({
+      where: { id: String(req.params.id) },
+      include: priceTiersOrder,
+    });
     if (!p) return res.status(404).json({ message: "Product not found" });
     res.json(serializeProduct(p));
   } catch (err) {

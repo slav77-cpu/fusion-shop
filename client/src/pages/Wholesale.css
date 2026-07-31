@@ -1,0 +1,351 @@
+.wholesalePage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 56px;
+}
+
+.wsEyebrow {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent, #1c8a5c);
+  margin-bottom: 10px;
+}
+
+.wsTitle {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.15;
+  max-width: 24ch;
+}
+
+.wsText {
+  color: var(--muted, #6b6a63);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 56ch;
+  margin: 0;
+}
+
+/* Tier intro cards */
+.wsTierGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+@media (min-width: 720px) {
+  .wsTierGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.wsTierCard {
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.wsTierCard--dark {
+  background: var(--ink, #1c1c1a);
+  color: #f7f6f2;
+  border-color: transparent;
+}
+
+.wsTierName {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.wsTierText {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.wsTierPrice {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--accent, #1c8a5c);
+}
+
+.wsTierCard--dark .wsTierPrice {
+  color: #4fd39a;
+}
+
+/* Price list */
+.wsListSection {
+  margin-top: 40px;
+}
+
+.wsListTitle {
+  font-size: 20px;
+  margin: 0 0 14px;
+}
+
+.categoryRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+
+.categoryRow::-webkit-scrollbar {
+  display: none;
+}
+
+.categoryPill {
+  flex: 0 0 auto;
+  height: auto;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #e7e4db);
+  background: transparent;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink, #1c1c1a);
+}
+
+.categoryPill:hover {
+  border-color: var(--accent, #1c8a5c);
+  color: var(--accent, #1c8a5c);
+}
+
+.categoryPill.is-active {
+  border-color: var(--accent, #1c8a5c);
+  background: var(--accentSoft, rgba(28, 138, 92, 0.12));
+  color: var(--accent, #1c8a5c);
+}
+
+.wsSearchWrap {
+  position: relative;
+  flex: 0 0 auto;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.wsSearchWrap svg {
+  position: absolute;
+  left: 12px;
+  color: var(--muted, #6b6a63);
+  pointer-events: none;
+}
+
+.wsSearchInput {
+  width: 160px;
+  height: 40px;
+  padding: 0 12px 0 32px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #e7e4db);
+  background: #faf9f5;
+  font-size: 13px;
+}
+
+.wsSearchInput:focus {
+  border-color: var(--accent, #1c8a5c);
+  background: #fff;
+}
+
+.msg {
+  color: var(--muted, #6b6a63);
+  margin-top: 12px;
+}
+
+.wsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.wsRow {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+@media (min-width: 640px) {
+  .wsRow {
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+  }
+}
+
+.wsRowImage {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--line, #e7e4db);
+}
+
+.wsRowInfo {
+  min-width: 0;
+}
+
+.wsRowCategory {
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent, #1c8a5c);
+  margin-bottom: 3px;
+}
+
+.wsRowTitle {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.wsRowTiers {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 640px) {
+  .wsRowTiers {
+    margin-top: 0;
+    grid-column: auto;
+    align-items: flex-end;
+  }
+}
+
+.wsTierRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.wsTierRow__label {
+  font-weight: 600;
+}
+
+.wsTierRow__moq {
+  color: var(--muted, #6b6a63);
+}
+
+.wsTierRow__price {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.wsTierRow__price em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--muted, #6b6a63);
+  margin-left: 6px;
+  font-size: 11px;
+}
+
+.wsNoTiers {
+  color: var(--muted, #6b6a63);
+  font-size: 12.5px;
+  font-style: italic;
+}
+
+/* Quote section */
+.wsQuoteSection {
+  margin-top: 48px;
+}
+
+.wsQuoteGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 900px) {
+  .wsQuoteGrid {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.wsQuoteTitle {
+  font-size: 22px;
+  margin: 0 0 10px;
+}
+
+.wsQuoteText {
+  color: var(--muted, #6b6a63);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 44ch;
+}
+
+.wsQuoteForm {
+  display: grid;
+  gap: 10px;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.wsError {
+  color: crimson;
+  margin: 0;
+}
+
+.wsSubmitBtn {
+  margin-top: 4px;
+  padding: 14px;
+  background: var(--accent, #1c8a5c);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.wsSubmitBtn:hover {
+  opacity: 0.92;
+}
+
+.wsSuccess {
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 14px;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.wsSuccessBadge {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  background: var(--accent, #1c8a5c);
+  color: #fff;
+  font-size: 26px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+}
+
+.wsSuccessTitle {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.wsSuccessText {
+  color: var(--muted, #6b6a63);
+  font-size: 13px;
+  margin-top: 6px;
+}

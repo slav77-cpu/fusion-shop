@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { API_URL } from "../lib/api";
 import type { CartItem, Paginated, Product, ProductsMeta } from "../types";
@@ -97,9 +97,16 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
     };
   }, [url]);
 
+  const cartTotalItems = cart.reduce((sum, i) => sum + i.qty, 0);
+  const cartTotalPrice = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
   return (
     <div className="productsPage">
       <h1 className="productsTitle">Продукти</h1>
+
+      <Link to="/wholesale" className="bulkBanner">
+        Купуваш повече от няколко кашона? <span>Виж цени на едро →</span>
+      </Link>
 
       {/* Category pills */}
       <div className="categoryRow">
@@ -222,6 +229,15 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
           Следваща →
         </button>
       </div>
+
+      {cart.length > 0 && (
+        <Link to="/cart" className="cartFloatBar">
+          <span>
+            {cartTotalItems} артикул{cartTotalItems === 1 ? "" : "а"} · {cartTotalPrice.toFixed(2)} €
+          </span>
+          <span className="cartFloatBar__cta">Виж количката →</span>
+        </Link>
+      )}
     </div>
   );
 }

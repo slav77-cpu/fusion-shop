@@ -9,6 +9,59 @@
   font-size: 28px;
 }
 
+.bulkBanner {
+  display: block;
+  background: var(--accentSoft, rgba(28, 138, 92, 0.12));
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #30302a;
+  margin-top: 14px;
+}
+
+.bulkBanner span {
+  color: var(--accent, #1c8a5c);
+  font-weight: 700;
+}
+
+.cartFloatBar {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 82px;
+  z-index: 45;
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--ink, #1c1c1a);
+  color: #f7f6f2;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.4);
+}
+
+.cartFloatBar__cta {
+  color: var(--accent, #23b374);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (min-width: 1080px) {
+  .cartFloatBar {
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    width: 360px;
+  }
+}
+
 /* Category pills */
 .categoryRow {
   display: flex;

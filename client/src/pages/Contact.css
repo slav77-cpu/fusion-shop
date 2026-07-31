@@ -1,0 +1,166 @@
+.contactPage {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 20px 56px;
+}
+
+.cTitle {
+  margin: 0 0 10px;
+  font-size: 28px;
+}
+
+.cText {
+  color: var(--muted, #6b6a63);
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 56ch;
+  margin: 0 0 24px;
+}
+
+.cInfoGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .cInfoGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.cInfoCard {
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 12px;
+  padding: 18px;
+}
+
+.cInfoLabel {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent, #1c8a5c);
+  margin-bottom: 6px;
+}
+
+.cInfoValue {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.cGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  margin-top: 28px;
+}
+
+@media (min-width: 900px) {
+  .cGrid {
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: start;
+  }
+}
+
+.cForm {
+  display: grid;
+  gap: 10px;
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.cForm textarea {
+  resize: vertical;
+  padding: 10px 12px;
+  height: auto;
+}
+
+.cError {
+  color: crimson;
+  margin: 0;
+}
+
+.cSubmitBtn {
+  margin-top: 4px;
+  padding: 14px;
+  background: var(--accent, #1c8a5c);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.cSubmitBtn:hover {
+  opacity: 0.92;
+}
+
+.cSuccess {
+  text-align: center;
+  padding: 24px 8px;
+}
+
+.cSuccessBadge {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background: var(--accent, #1c8a5c);
+  color: #fff;
+  font-size: 24px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+}
+
+.cSuccessTitle {
+  font-weight: 700;
+}
+
+.cSuccessText {
+  color: var(--muted, #6b6a63);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.cFaq h2 {
+  font-size: 20px;
+  margin: 0 0 16px;
+}
+
+.cFaqItem {
+  background: var(--card, #fff);
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+
+.cFaqQ {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  height: auto;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink, #1c1c1a);
+}
+
+.cFaqSymbol {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--accent, #1c8a5c);
+}
+
+.cFaqA {
+  color: var(--muted, #6b6a63);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 10px;
+}

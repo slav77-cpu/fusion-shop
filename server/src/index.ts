@@ -10,6 +10,8 @@ import ordersRoutes from "./routes/orders.js";
 import authRoutes from "./routes/auth.js";
 import stockRoutes from "./routes/stock.js";
 import paymentsWebhookRoutes from "./routes/payments.js";
+import wholesaleRoutes from "./routes/wholesale.js";
+import contactRoutes from "./routes/contact.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
@@ -59,6 +61,8 @@ app.use("/products", productsRoutes);
 app.use("/orders", ordersRoutes);
 app.use("/auth", authRoutes);
 app.use("/stock", stockRoutes);
+app.use("/wholesale/quotes", wholesaleRoutes);
+app.use("/contact", contactRoutes);
 
 /* ---------------- ERRORS ---------------- */
 

@@ -29,7 +29,7 @@
 .nav__links {
   display: none;
   align-items: center;
-  gap: 26px;
+  gap: 18px;
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 14px;

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Product } from "../types";
 import ProductImage from "./ProductImage";
 import "./ProductCard.css";
@@ -20,30 +21,32 @@ export default function ProductCard({ p, qty = 0, onAdd, onInc, onDec }: Product
 
   return (
     <div className="product-card">
-      <div className="product-image-wrap">
-        <ProductImage src={p.imageUrl} alt={title} />
-      </div>
-
-      <div className="product-main">
-        {p.category && <div className="product-eyebrow">{p.category}</div>}
-        <div className="product-title" title={title}>
-          {title}
+      <Link to={`/products/${p.id}`} className="product-card__link">
+        <div className="product-image-wrap">
+          <ProductImage src={p.imageUrl} alt={title} />
         </div>
 
-        <div className="product-meta">
-          {p.brand && <span>{p.brand}</span>}
-          {p.brand && pack && <span> • </span>}
-          {pack && <span>{pack}</span>}
-        </div>
+        <div className="product-main">
+          {p.category && <div className="product-eyebrow">{p.category}</div>}
+          <div className="product-title" title={title}>
+            {title}
+          </div>
 
-        <div className="product-badges">
-          <span className={p.inStock ? "badge in" : "badge out"}>
-            {p.inStock ? "В наличност" : "Няма наличност"}
-          </span>
+          <div className="product-meta">
+            {p.brand && <span>{p.brand}</span>}
+            {p.brand && pack && <span> • </span>}
+            {pack && <span>{pack}</span>}
+          </div>
 
-          {p.tag && <span className="badge tag">{p.tag}</span>}
+          <div className="product-badges">
+            <span className={p.inStock ? "badge in" : "badge out"}>
+              {p.inStock ? "В наличност" : "Няма наличност"}
+            </span>
+
+            {p.tag && <span className="badge tag">{p.tag}</span>}
+          </div>
         </div>
-      </div>
+      </Link>
 
       <div className="product-footer">
         <div className="product-price">{Number(p.price).toFixed(2)} €</div>
