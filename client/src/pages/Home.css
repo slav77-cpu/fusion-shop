@@ -1,52 +1,64 @@
 .home {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 18px;
+  padding: 28px 20px 40px;
 }
 
 /* HERO */
 .hero {
-  border-radius: 20px;
-  padding: 22px;
-  border: 1px solid #eaeaea;
-  background: linear-gradient(180deg, #ffffff 0%, #f2f4f8 100%);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  padding: 8px 0 20px;
+}
+
+.heroEyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent, #1c8a5c);
+  margin-bottom: 14px;
 }
 
 .heroTitle {
   margin: 0;
-  font-size: 44px;
-  font-weight: 900;
-  letter-spacing: -0.3px;
+  font-family: var(--font-heading);
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  max-width: 20ch;
 }
 
 .heroText {
-  margin-top: 8px;
-  color: #555;
-  max-width: 720px;
+  margin-top: 16px;
+  color: var(--muted, #6b6a63);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 46ch;
 }
 
 .heroActions {
   display: flex;
-  gap: 10px;
-  margin-top: 14px;
+  gap: 14px;
+  margin-top: 24px;
   flex-wrap: wrap;
 }
 
 /* BUTTONS */
 .btn {
   display: inline-block;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
-  background: #fff;
-  color: #111;
-  font-weight: 800;
+  padding: 14px 24px;
+  border-radius: 8px;
+  border: 1.5px solid var(--ink, #1c1c1a);
+  background: transparent;
+  color: var(--ink, #1c1c1a);
+  font-weight: 700;
+  font-size: 14px;
   text-decoration: none;
 }
 
 .btnPrimary {
-  background: var(--brand, #16a34a);
+  background: var(--accent, #1c8a5c);
   color: #fff;
   border-color: transparent;
 }
@@ -55,13 +67,18 @@
   opacity: 0.92;
 }
 
+.btnGhost {
+  border-color: var(--line, #e7e4db);
+}
+
 .btnGhost:hover {
-  background: #f8f8f8;
+  border-color: var(--accent, #1c8a5c);
+  color: var(--accent, #1c8a5c);
 }
 
 /* HOT */
 .hot {
-  margin-top: 18px;
+  margin-top: 24px;
 }
 
 .hotHeader {
@@ -73,23 +90,25 @@
 
 .hotTitle {
   margin: 0;
+  font-size: 22px;
 }
 
 .hotLink {
-  font-weight: 800;
-  opacity: 0.8;
-  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--accent, #1c8a5c);
+  white-space: nowrap;
 }
 
 .hotLink:hover {
-  opacity: 1;
+  opacity: 0.85;
 }
 
 .hotGrid {
-  margin-top: 12px;
+  margin-top: 16px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
 @media (max-width: 1000px) {
@@ -109,7 +128,7 @@
 /* MESSAGES */
 .msg {
   margin-top: 12px;
-  opacity: 0.85;
+  color: var(--muted, #6b6a63);
 }
 
 .msgError {
@@ -120,6 +139,6 @@
 /* Responsive */
 @media (max-width: 768px) {
   .heroTitle {
-    font-size: 34px;
+    font-size: 30px;
   }
 }

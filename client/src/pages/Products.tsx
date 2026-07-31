@@ -2,14 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { API_URL } from "../lib/api";
-import type { Paginated, Product, ProductsMeta } from "../types";
+import type { CartItem, Paginated, Product, ProductsMeta } from "../types";
 import "./Products.css";
 
 interface ProductsProps {
+  cart?: CartItem[];
   onAdd?: (p: Product) => void;
+  onInc?: (id: string) => void;
+  onDec?: (id: string) => void;
 }
 
-export default function Products({ onAdd }: ProductsProps) {
+export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsProps) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -98,6 +101,27 @@ export default function Products({ onAdd }: ProductsProps) {
     <div className="productsPage">
       <h1 className="productsTitle">Продукти</h1>
 
+      {/* Category pills */}
+      <div className="categoryRow">
+        <button
+          type="button"
+          className={`categoryPill ${!category ? "is-active" : ""}`}
+          onClick={() => setParams({ category: "", page: 1 })}
+        >
+          Всички
+        </button>
+        {meta.categories.map((c) => (
+          <button
+            type="button"
+            key={c}
+            className={`categoryPill ${category === c ? "is-active" : ""}`}
+            onClick={() => setParams({ category: c, page: 1 })}
+          >
+            {c}
+          </button>
+        ))}
+      </div>
+
       {/* Filters row */}
       <div className="filtersGrid">
         <select value={sort} onChange={(e) => setParams({ sort: e.target.value, page: 1 })}>
@@ -105,15 +129,6 @@ export default function Products({ onAdd }: ProductsProps) {
           <option value="price_asc">Цена ↑</option>
           <option value="price_desc">Цена ↓</option>
           <option value="title_asc">Име A–Z</option>
-        </select>
-
-        <select value={category} onChange={(e) => setParams({ category: e.target.value, page: 1 })}>
-          <option value="">Всички категории</option>
-          {meta.categories.map((c) => (
-            <option key={c} value={c}>
-              {c}
-            </option>
-          ))}
         </select>
 
         <select value={brand} onChange={(e) => setParams({ brand: e.target.value, page: 1 })}>
@@ -172,7 +187,14 @@ export default function Products({ onAdd }: ProductsProps) {
 
       <div className="productsGrid">
         {items.map((p) => (
-          <ProductCard key={p.id} p={p} onAdd={onAdd} />
+          <ProductCard
+            key={p.id}
+            p={p}
+            qty={cart.find((x) => x.id === p.id)?.qty ?? 0}
+            onAdd={onAdd}
+            onInc={onInc}
+            onDec={onDec}
+          />
         ))}
       </div>
 

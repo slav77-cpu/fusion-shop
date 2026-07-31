@@ -1,19 +1,59 @@
 .productsPage {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 18px;
+  padding: 18px 20px 40px;
 }
 
 .productsTitle {
-  margin-top: 18px;
+  margin-top: 10px;
+  font-size: 28px;
 }
 
-/* Filters (4 columns on desktop) */
+/* Category pills */
+.categoryRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-top: 16px;
+  scrollbar-width: none;
+}
+
+.categoryRow::-webkit-scrollbar {
+  display: none;
+}
+
+.categoryPill {
+  flex: 0 0 auto;
+  height: auto;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line, #e7e4db);
+  background: transparent;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink, #1c1c1a);
+}
+
+.categoryPill:hover {
+  border-color: var(--accent, #1c8a5c);
+  color: var(--accent, #1c8a5c);
+}
+
+.categoryPill.is-active {
+  border-color: var(--accent, #1c8a5c);
+  background: var(--accentSoft, rgba(28, 138, 92, 0.12));
+  color: var(--accent, #1c8a5c);
+}
+
+/* Filters (3 columns on desktop) */
 .filtersGrid {
   display: grid;
-  grid-template-columns: 1fr 180px 180px 180px;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
   align-items: center;
+  margin-top: 14px;
   margin-bottom: 12px;
 }
 
@@ -37,18 +77,18 @@
 }
 
 .resetBtn {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .totalBox {
   margin-left: auto;
-  opacity: 0.8;
+  color: var(--muted, #6b6a63);
 }
 
 /* Messages */
 .msg {
   margin: 10px 0 0;
-  opacity: 0.85;
+  color: var(--muted, #6b6a63);
 }
 
 .msgError {
@@ -56,19 +96,12 @@
   opacity: 1;
 }
 
-/* PRODUCTS GRID — bigger cards + 2 columns */
+/* PRODUCTS GRID */
 .productsGrid {
   margin-top: 12px;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-}
-.filtersGrid,
-.priceRow {
-  background: transparent;
-  border: none; /* no white/boxed strips */
-  border-radius: 16px;
-  padding: 0;
+  gap: 16px;
 }
 
 /* UNDERLINE STYLE FILTERS (no boxes) */
@@ -76,19 +109,19 @@
 .priceRow input {
   background: transparent;
   border: none;
-  border-bottom: 2px solid rgba(0,0,0,0.18);
+  border-bottom: 2px solid var(--line, #e7e4db);
   border-radius: 0;
   padding: 6px 4px;
 }
 
 .filtersGrid select:hover,
 .priceRow input:hover {
-  border-bottom-color: rgba(0,0,0,0.35);
+  border-bottom-color: var(--muted, #6b6a63);
 }
 
 .filtersGrid select:focus,
 .priceRow input:focus {
-  border-bottom-color: #6b6cff; /* soft blue-lilac accent */
+  border-bottom-color: var(--accent, #1c8a5c);
   box-shadow: none;
 }
 
@@ -97,7 +130,7 @@
   background: transparent;
   border: none;
   color: #c62828;
-  font-weight: 900;
+  font-weight: 700;
   padding: 6px 8px;
 }
 
@@ -149,11 +182,11 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 20px;
 }
 
 .pagerBtn {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .pagerBtn:disabled {
@@ -162,5 +195,5 @@
 }
 
 .pagerText {
-  opacity: 0.85;
+  color: var(--muted, #6b6a63);
 }

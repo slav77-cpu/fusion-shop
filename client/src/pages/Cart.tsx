@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { resolveImageUrl } from "../lib/api";
+import ProductImage from "../components/ProductImage";
 import type { CartItem } from "../types";
 import "./Cart.css";
 
@@ -32,14 +33,9 @@ export default function Cart({ cart, onInc, onDec, onRemove, onClear }: CartProp
                 className={`cartRow ${removingId === i.id ? "cartRow--removing" : ""}`}
               >
                 <div className="cartImageWrap">
-                  <img
-                    src={resolveImageUrl(i.imageUrl)}
+                  <ProductImage
+                    src={i.imageUrl ? resolveImageUrl(i.imageUrl) : undefined}
                     alt={i.title}
-                    className="cartImage"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.src = "/no-image.png";
-                    }}
                   />
                 </div>
 

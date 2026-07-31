@@ -1,26 +1,25 @@
 .checkoutPage {
   max-width: 700px;
   margin: 0 auto;
-  padding: 18px;
+  padding: 18px 20px 40px;
 }
 
 .checkoutTitle {
-  margin-top: 18px;
-  font-size: 26px;
-  font-weight: 900;
+  margin-top: 10px;
+  font-size: 24px;
 }
 
 .checkoutSuccessText {
   margin-top: 8px;
-  opacity: 0.85;
+  color: var(--muted, #6b6a63);
 }
 
 .checkoutSummary {
-  margin-top: 12px;
-  padding: 14px;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  background: white;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 14px;
+  background: var(--card, #fff);
 }
 
 .checkoutSummaryRow {
@@ -36,10 +35,10 @@
 
 .checkoutForm {
   margin-top: 14px;
-  padding: 14px;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  background: white;
+  padding: 16px;
+  border: 1px solid var(--line, #e7e4db);
+  border-radius: 14px;
+  background: var(--card, #fff);
   display: grid;
   gap: 10px;
 }
@@ -65,21 +64,18 @@
 
 .checkoutPrimaryBtn {
   margin-top: 6px;
-  padding: 12px 16px;
-  border-radius: 14px;
+  padding: 14px;
+  border-radius: 8px;
   border: none;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: var(--accent, #1c8a5c);
   color: white;
-  font-weight: 900;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(22, 163, 74, 0.35);
-  transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
 .checkoutPrimaryBtn:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.45);
+  opacity: 0.92;
 }
 
 .checkoutPrimaryBtn:disabled {
@@ -103,29 +99,28 @@
   width: 82px;
   height: 82px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+  background: var(--accent, #1c8a5c);
   display: grid;
   place-items: center;
-  box-shadow: 0 14px 34px rgba(22, 163, 74, 0.35);
   animation: popIn 0.35s ease-out;
 }
 
 .checkoutSuccessCheck {
   color: #fff;
   font-size: 40px;
-  font-weight: 900;
+  font-weight: 700;
   animation: checkDrop 0.45s ease-out 0.1s both;
 }
 
 .checkoutSuccessTitle {
   margin: 0;
+  font-family: var(--font-heading);
   font-size: 22px;
-  font-weight: 900;
 }
 
 .checkoutSuccessSub {
   margin: 0;
-  opacity: 0.85;
+  color: var(--muted, #6b6a63);
 }
 
 /* Animations */

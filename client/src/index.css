@@ -1,18 +1,24 @@
 :root {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-heading: 'Sora', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
 
-  color: #111;
-  background: #f6f7fb;
---accent: #4f46e5;   /* индиго */
---accentSoft: rgba(79, 70, 229, 0.12);
+  color: #1c1c1a;
+  background: #faf9f5;
+--accent: #1c8a5c;
+--accentSoft: rgba(28, 138, 92, 0.12);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  --brand: #1f7a3a;
-  --brandDark: #165c2b;
-
+  --brand: #1c8a5c;
+  --brandDark: #146341;
+  --ink: #1c1c1a;
+  --muted: #6b6a63;
+  --line: #e7e4db;
+  --card: #ffffff;
 }
 
 * {
@@ -22,7 +28,12 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f5f5f0;
+  background: #faf9f5;
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
 }
 
 a {
@@ -34,7 +45,7 @@ button,
 input,
 select {
   font: inherit;
-  color: #111;
+  color: #1c1c1a;
 }
 /* ---------- GLOBAL FORM UI ---------- */
 
@@ -68,5 +79,16 @@ button:hover {
 button:disabled {
   opacity: .5;
   cursor: not-allowed;
+}
+
+/* Clears the fixed mobile bottom tab bar (see Navbar.css .tabbar) */
+.appShell {
+  padding-bottom: 78px;
+}
+
+@media (min-width: 1080px) {
+  .appShell {
+    padding-bottom: 0;
+  }
 }
 

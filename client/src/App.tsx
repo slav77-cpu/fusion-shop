@@ -122,9 +122,16 @@ export default function App() {
         onAdminLogout={handleAdminLogout}
       />
 
+      <div className="appShell">
       <Routes>
-        <Route path="/" element={<Home onAdd={addToCart} />} />
-        <Route path="/products" element={<Products onAdd={addToCart} />} />
+        <Route
+          path="/"
+          element={<Home cart={cart} onAdd={addToCart} onInc={inc} onDec={dec} />}
+        />
+        <Route
+          path="/products"
+          element={<Products cart={cart} onAdd={addToCart} onInc={inc} onDec={dec} />}
+        />
 
         <Route
           path="/cart"
@@ -202,6 +209,7 @@ export default function App() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </div>
     </>
   );
 }

@@ -2,14 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { API_URL } from "../lib/api";
-import type { Paginated, Product } from "../types";
+import type { CartItem, Paginated, Product } from "../types";
 import "./Home.css";
 
 interface HomeProps {
+  cart?: CartItem[];
   onAdd?: (p: Product) => void;
+  onInc?: (id: string) => void;
+  onDec?: (id: string) => void;
 }
 
-export default function Home({ onAdd }: HomeProps) {
+export default function Home({ cart = [], onAdd, onInc, onDec }: HomeProps) {
   const [items, setItems] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -51,7 +54,8 @@ export default function Home({ onAdd }: HomeProps) {
     <div className="home">
       {/* Hero */}
       <section className="hero">
-        <h1 className="heroTitle">Fusion Shop</h1>
+        <div className="heroEyebrow">Ежедневни консумативи</div>
+        <h1 className="heroTitle">Всичко за дома, доставено бързо.</h1>
         <p className="heroText">
           Консумативи и продукти за ежедневието — бърза поръчка с наложен платеж.
         </p>
@@ -85,7 +89,14 @@ export default function Home({ onAdd }: HomeProps) {
 
         <div className="hotGrid">
           {items.map((p) => (
-            <ProductCard key={p.id} p={p} onAdd={onAdd} />
+            <ProductCard
+              key={p.id}
+              p={p}
+              qty={cart.find((x) => x.id === p.id)?.qty ?? 0}
+              onAdd={onAdd}
+              onInc={onInc}
+              onDec={onDec}
+            />
           ))}
         </div>
 
