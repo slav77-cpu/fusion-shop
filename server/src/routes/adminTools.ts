@@ -10,13 +10,14 @@ import { demoProducts } from "../lib/demoProducts.js";
 // something to leave lying around indefinitely.
 const router = express.Router();
 
-router.post("/reseed-demo", requireAdmin, async (_req: Request, res: Response, next: NextFunction) => {
+// Additive only — does NOT touch existing products. Adds the demo catalog
+// alongside whatever's already there.
+router.post("/add-demo", requireAdmin, async (_req: Request, res: Response, next: NextFunction) => {
   try {
-    await prisma.product.deleteMany();
     for (const p of demoProducts) {
       await prisma.product.create({ data: p });
     }
-    res.json({ seeded: demoProducts.length });
+    res.json({ added: demoProducts.length });
   } catch (err) {
     next(err);
   }
