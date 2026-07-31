@@ -19,17 +19,14 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
   // URL params
   const q = (searchParams.get("q") || "").trim();
   const category = searchParams.get("category") || "";
-  const brand = searchParams.get("brand") || "";
-  const sort = searchParams.get("sort") || "newest";
-  const minPrice = searchParams.get("minPrice") || "";
-  const maxPrice = searchParams.get("maxPrice") || "";
   const page = Number(searchParams.get("page") || "1");
-  const limit = Number(searchParams.get("limit") || "10");
+  // No page-size picker in the UI (matches the mockup's flat, unpaginated
+  // grid) — high enough that a small catalog fits on one screen.
+  const limit = Number(searchParams.get("limit") || "24");
 
   // data
   const [meta, setMeta] = useState<ProductsMeta>({ categories: [], brands: [] });
   const [items, setItems] = useState<Product[]>([]);
-  const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -59,14 +56,10 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
     const u = new URL(`${API_URL}/products`);
     if (q) u.searchParams.set("q", q);
     if (category) u.searchParams.set("category", category);
-    if (brand) u.searchParams.set("brand", brand);
-    if (sort) u.searchParams.set("sort", sort);
-    if (minPrice) u.searchParams.set("minPrice", minPrice);
-    if (maxPrice) u.searchParams.set("maxPrice", maxPrice);
     u.searchParams.set("page", String(page));
     u.searchParams.set("limit", String(limit));
     return u.toString();
-  }, [q, category, brand, sort, minPrice, maxPrice, page, limit]);
+  }, [q, category, page, limit]);
 
   useEffect(() => {
     let cancelled = false;
@@ -81,7 +74,6 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
 
         if (!cancelled) {
           setItems(data.items || []);
-          setTotal(data.total || 0);
           setPages(data.pages || 1);
         }
       } catch (e) {
@@ -129,66 +121,6 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
         ))}
       </div>
 
-      {/* Filters row */}
-      <div className="filtersGrid">
-        <select value={sort} onChange={(e) => setParams({ sort: e.target.value, page: 1 })}>
-          <option value="newest">Най-нови</option>
-          <option value="price_asc">Цена ↑</option>
-          <option value="price_desc">Цена ↓</option>
-          <option value="title_asc">Име A–Z</option>
-        </select>
-
-        <select value={brand} onChange={(e) => setParams({ brand: e.target.value, page: 1 })}>
-          <option value="">Всички марки</option>
-          {meta.brands.map((b) => (
-            <option key={b} value={b}>
-              {b}
-            </option>
-          ))}
-        </select>
-
-        <select value={limit} onChange={(e) => setParams({ limit: e.target.value, page: 1 })}>
-          <option value="5">5 / page</option>
-          <option value="10">10 / page</option>
-          <option value="20">20 / page</option>
-        </select>
-      </div>
-
-      {/* Price filter */}
-      <div className="priceRow">
-        <input
-          value={minPrice}
-          onChange={(e) => setParams({ minPrice: e.target.value, page: 1 })}
-          placeholder="Мин. цена"
-        />
-        <input
-          value={maxPrice}
-          onChange={(e) => setParams({ maxPrice: e.target.value, page: 1 })}
-          placeholder="Макс. цена"
-        />
-
-        <button
-          className="resetBtn"
-          onClick={() =>
-            setParams({
-              category: "",
-              brand: "",
-              sort: "newest",
-              minPrice: "",
-              maxPrice: "",
-              page: 1,
-              limit: 10,
-            })
-          }
-        >
-          Изчисти
-        </button>
-
-        <div className="totalBox">
-          Общо: <b>{total}</b>
-        </div>
-      </div>
-
       {loading && <p className="msg">Зареждане...</p>}
       {err && <p className="msg msgError">{err}</p>}
 
@@ -207,28 +139,30 @@ export default function Products({ cart = [], onAdd, onInc, onDec }: ProductsPro
 
       {!loading && !err && items.length === 0 && <p className="msg">Няма резултати.</p>}
 
-      {/* Pagination */}
-      <div className="pager">
-        <button
-          className="pagerBtn"
-          onClick={() => setParams({ page: Math.max(1, page - 1) })}
-          disabled={page <= 1}
-        >
-          ← Предишна
-        </button>
+      {/* Pagination — only shown once the catalog outgrows one page */}
+      {pages > 1 && (
+        <div className="pager">
+          <button
+            className="pagerBtn"
+            onClick={() => setParams({ page: Math.max(1, page - 1) })}
+            disabled={page <= 1}
+          >
+            ← Предишна
+          </button>
 
-        <div className="pagerText">
-          Страница <b>{page}</b> / <b>{pages}</b>
+          <div className="pagerText">
+            Страница <b>{page}</b> / <b>{pages}</b>
+          </div>
+
+          <button
+            className="pagerBtn"
+            onClick={() => setParams({ page: Math.min(pages, page + 1) })}
+            disabled={page >= pages}
+          >
+            Следваща →
+          </button>
         </div>
-
-        <button
-          className="pagerBtn"
-          onClick={() => setParams({ page: Math.min(pages, page + 1) })}
-          disabled={page >= pages}
-        >
-          Следваща →
-        </button>
-      </div>
+      )}
 
       {cart.length > 0 && (
         <Link to="/cart" className="cartFloatBar">

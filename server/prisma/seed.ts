@@ -15,6 +15,15 @@ const products: Prisma.ProductCreateInput[] = [
     price: new Prisma.Decimal(6.9),
     stockQty: 25,
     groupId: "sky-shampoo-400",
+    tag: "Хит",
+    description:
+      "Мек шампоан за ежедневна употреба с аромат на ванилия. Подходящ за всеки тип коса.",
+    priceTiers: {
+      create: [
+        { label: "Кутия (10 пакета)", unitQty: 10, price: new Prisma.Decimal(55), moqTiers: 1, sortOrder: 0 },
+        { label: "Палет (1000 пакета)", unitQty: 1000, price: new Prisma.Decimal(4500), moqTiers: 1, sortOrder: 1 },
+      ],
+    },
   },
   {
     title: "Sky Shampoo",
@@ -27,6 +36,47 @@ const products: Prisma.ProductCreateInput[] = [
     groupId: "sky-shampoo-400",
   },
   {
+    title: "Sky Shampoo",
+    variantName: "Ocean Fresh",
+    brand: "Sky",
+    category: "shampoo",
+    sizeMl: 400,
+    price: new Prisma.Decimal(6.9),
+    stockQty: 30,
+    groupId: "sky-shampoo-400",
+  },
+  {
+    title: "Sky Shampoo",
+    variantName: "Mint",
+    brand: "Sky",
+    category: "shampoo",
+    sizeMl: 400,
+    price: new Prisma.Decimal(6.9),
+    stockQty: 20,
+    groupId: "sky-shampoo-400",
+  },
+  {
+    title: "Fusion Shampoo",
+    variantName: "Classic",
+    brand: "Fusion",
+    category: "shampoo",
+    sizeMl: 400,
+    price: new Prisma.Decimal(5.5),
+    stockQty: 35,
+    groupId: "fusion-shampoo-400",
+    tag: "Ново",
+  },
+  {
+    title: "Fusion Shampoo",
+    variantName: "Herbal",
+    brand: "Fusion",
+    category: "shampoo",
+    sizeMl: 400,
+    price: new Prisma.Decimal(5.9),
+    stockQty: 28,
+    groupId: "fusion-shampoo-400",
+  },
+  {
     title: "Astra Blades",
     variantName: "Green (5 pcs)",
     brand: "Astra",
@@ -35,13 +85,92 @@ const products: Prisma.ProductCreateInput[] = [
     stockQty: 40,
     groupId: "astra-blades",
   },
+  {
+    title: "Astra Blades",
+    variantName: "Blue (5 pcs)",
+    brand: "Astra",
+    category: "razor-blades",
+    price: new Prisma.Decimal(2.5),
+    stockQty: 32,
+    groupId: "astra-blades",
+  },
+  {
+    title: "Astra Blades",
+    variantName: "Sensitive (5 pcs)",
+    brand: "Astra",
+    category: "razor-blades",
+    price: new Prisma.Decimal(2.75),
+    stockQty: 18,
+    groupId: "astra-blades",
+  },
+  {
+    title: "Nova Wet Wipes",
+    variantName: "Multi-Surface",
+    brand: "Nova",
+    category: "household-cleaning",
+    pcs: 80,
+    price: new Prisma.Decimal(3.29),
+    stockQty: 45,
+    groupId: "nova-wipes",
+  },
+  {
+    title: "Nova Wet Wipes",
+    variantName: "Lemon",
+    brand: "Nova",
+    category: "household-cleaning",
+    pcs: 80,
+    price: new Prisma.Decimal(3.49),
+    stockQty: 22,
+    groupId: "nova-wipes",
+  },
+  {
+    title: "Nova All-Purpose Cleaner",
+    brand: "Nova",
+    category: "household-cleaning",
+    sizeMl: 750,
+    price: new Prisma.Decimal(3.99),
+    stockQty: 26,
+    groupId: "nova-cleaner",
+  },
+  {
+    title: "Sky Dish Soap",
+    brand: "Sky",
+    category: "household-cleaning",
+    sizeMl: 500,
+    price: new Prisma.Decimal(2.49),
+    stockQty: 33,
+    groupId: "sky-dish-soap",
+  },
+  {
+    title: "Nova Bath Tissue",
+    variantName: "12-Pack",
+    brand: "Nova",
+    category: "paper-hygiene",
+    pcs: 12,
+    price: new Prisma.Decimal(7.99),
+    stockQty: 15,
+    groupId: "nova-bath-tissue",
+  },
+  {
+    title: "Nova Facial Tissue Box",
+    brand: "Nova",
+    category: "paper-hygiene",
+    pcs: 150,
+    price: new Prisma.Decimal(2.49),
+    stockQty: 40,
+    groupId: "nova-facial-tissue",
+  },
 ];
 
 async function run() {
   // Products referenced by existing order items are kept safe: OrderItem.productId
   // is ON DELETE SET NULL, so this never touches the Order/OrderItem history.
   await prisma.product.deleteMany();
-  await prisma.product.createMany({ data: products });
+  // create (not createMany) — a couple of entries above nest a priceTiers
+  // create, which createMany can't express since it only writes scalar columns.
+  for (const p of products) {
+    await prisma.product.create({ data: p });
+  }
 
   console.log(`Seeded ${products.length} products`);
 }
