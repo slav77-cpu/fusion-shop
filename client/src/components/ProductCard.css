@@ -1,19 +1,10 @@
+/* No card box/border/shadow — just an image with plain text below it,
+   floating directly on the page background (matches the mockup). */
 .product-card {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 12px;
-  border-radius: 14px;
-  background: var(--card, #fff);
-  border: 1px solid var(--line, #e7e4db);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   height: 100%;
-}
-
-.product-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(28, 28, 26, 0.08);
-  border-color: var(--line, #e7e4db);
 }
 
 .product-card__link {
@@ -23,12 +14,12 @@
   min-width: 0;
 }
 
-/* Image (top) */
+/* Image (top) — no border, just the placeholder's own tint against the
+   page background, matching the mockup's plain image-slot. */
 .product-image-wrap {
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 10px;
-  border: 1px solid var(--line, #e7e4db);
   overflow: hidden;
 }
 
@@ -200,7 +191,6 @@
   }
 
   .product-card {
-    padding: 8px;
     gap: 6px;
   }
 
