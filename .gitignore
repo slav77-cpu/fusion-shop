@@ -1,6 +1,7 @@
 # ENV files
 .env
 server/.env
+server/.env.test
 client/.env
 
 # Node modules
